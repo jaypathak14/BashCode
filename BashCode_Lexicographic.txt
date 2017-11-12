@@ -1,0 +1,36 @@
+touch lexi.txt
+for (( i=0; ; i++ ))
+do
+  read value
+  if [ -z "$value" ]
+  then
+      break
+      fi
+  echo $value >> lexi.txt
+done
+tag=$( tail -n 1 lexi.txt )
+#head -n -1 lexi.txt > lexii.txt
+sed -i '1d;$d' lexi.txt
+#cat lexi.txt
+#echo $tag
+key=$(cut -d' ' -f1 <<< "$tag")
+rev=$(cut -d' ' -f2 <<< "$tag")
+typ=$(cut -d' ' -f3 <<< "$tag")
+
+#echo $key 
+#echo $rev 
+#echo $typ
+if [ "$rev" == "true" -a "$typ" == "lexicographic" ]
+then
+   sort -rk $key lexi.txt
+elif [ "$rev" == "false" -a "$typ" == "lexicographic" ]
+then
+   sort -k $key lexi.txt
+elif [ "$rev" == "true" -a "$typ" == "numeric" ]
+then
+   sort -nrk $key lexi.txt
+elif [ "$rev" == "false" -a "$typ" == "numeric" ]
+then
+   sort -nk $key lexi.txt
+fi
+rm lexi.txt
